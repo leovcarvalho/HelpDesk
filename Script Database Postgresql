@@ -1,0 +1,37 @@
+Create Database HelpDesk;
+
+\c HelpDesk
+
+create table atendente 
+(atend_id serial primary key,  
+ atend_usuario varchar(50) not null, 
+ atend_senha varchar(20) not null);
+  
+insert into atendente (atend_usuario, atend_senha) values ('atendente', 'atendente123');
+
+create table funcionario
+(fun_id serial primary key,
+ fun_usuario varchar(50) not null,
+ fun_email varchar(50) not null,
+ fun_senha varchar(20) not null,
+ fun_telefone varchar(11) not null,
+ fun_online boolean default false);
+ 
+ create table patrimonio
+ (pat_id serial primary key,
+  pat_nome varchar(50) not null,
+  pat_preco decimal(10,2) not null,
+  fun_id int not null,
+  foreign key (fun_id) references funcionario(fun_id));
+
+
+create table chamado 
+(chamado_id serial primary key, 
+ chamado_txt varchar(250) not null, 
+ chamado_dt_aber timestamp, 
+ fun_id int not null,
+ foreign key (fun_id) references funcionario (fun_id),
+ pat_id int not null,
+ foreign key (pat_id) references patrimonio(pat_id),
+ atend_id int,
+ foreign key (atend_id) references atendente(atend_id));
